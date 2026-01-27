@@ -2,85 +2,60 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { 
-  TrendingUp, 
-  Target, 
-  Zap, 
-  Shield, 
-  BarChart3, 
-  Brain,
-  CheckCircle,
-  ArrowRight,
-  Crown
-} from 'lucide-react';
-
+import { TrendingUp, Target, Zap, Shield, BarChart3, Brain, CheckCircle, ArrowRight, Crown } from 'lucide-react';
 export default function Landing() {
-  const features = [
-    {
-      icon: Brain,
-      title: 'IA Avançada',
-      description: 'Modelos de machine learning analisam milhares de variáveis para predições precisas'
-    },
-    {
-      icon: BarChart3,
-      title: 'Expected Value (+EV)',
-      description: 'Identifica apostas com valor positivo comparando probabilidades reais vs odds oferecidas'
-    },
-    {
-      icon: Target,
-      title: 'Kelly Criterion',
-      description: 'Calcula o stake ideal para maximizar lucros e minimizar riscos'
-    },
-    {
-      icon: Zap,
-      title: 'Alertas em Tempo Real',
-      description: 'Receba notificações no Telegram quando a IA identificar oportunidades +EV'
-    },
-    {
-      icon: Shield,
-      title: 'Backtesting Transparente',
-      description: 'Histórico completo de acertos e erros para você avaliar a performance'
-    },
-    {
-      icon: TrendingUp,
-      title: 'Estatísticas Detalhadas',
-      description: 'Acompanhe seu ROI, taxa de acerto e evolução ao longo do tempo'
-    }
-  ];
-
-  const plans = [
-    {
-      name: 'Gratuito',
-      price: 'R$ 0',
-      period: '/mês',
-      description: 'Para começar a explorar',
-      features: ['5 predições/dia', 'Estatísticas básicas', 'Dashboard personalizado'],
-      cta: 'Começar Grátis',
-      popular: false
-    },
-    {
-      name: 'Pro',
-      price: 'R$ 29,90',
-      period: '/mês',
-      description: 'Para apostadores sérios',
-      features: ['50 predições/dia', 'Alertas Telegram', 'Estatísticas avançadas', 'Histórico completo', 'Suporte prioritário'],
-      cta: 'Assinar Pro',
-      popular: true
-    },
-    {
-      name: 'Premium',
-      price: 'R$ 79,90',
-      period: '/mês',
-      description: 'Máximo potencial',
-      features: ['Predições ilimitadas', 'Alertas prioritários', 'Kelly Criterion', 'API access', 'Suporte VIP', 'Consultoria mensal'],
-      cta: 'Assinar Premium',
-      popular: false,
-      premium: true
-    }
-  ];
-
-  return (
-    <div className="min-h-screen bg-background">
+  const features = [{
+    icon: Brain,
+    title: 'IA Avançada',
+    description: 'Modelos de machine learning analisam milhares de variáveis para predições precisas'
+  }, {
+    icon: BarChart3,
+    title: 'Expected Value (+EV)',
+    description: 'Identifica apostas com valor positivo comparando probabilidades reais vs odds oferecidas'
+  }, {
+    icon: Target,
+    title: 'Kelly Criterion',
+    description: 'Calcula o stake ideal para maximizar lucros e minimizar riscos'
+  }, {
+    icon: Zap,
+    title: 'Alertas em Tempo Real',
+    description: 'Receba notificações no Telegram quando a IA identificar oportunidades +EV'
+  }, {
+    icon: Shield,
+    title: 'Backtesting Transparente',
+    description: 'Histórico completo de acertos e erros para você avaliar a performance'
+  }, {
+    icon: TrendingUp,
+    title: 'Estatísticas Detalhadas',
+    description: 'Acompanhe seu ROI, taxa de acerto e evolução ao longo do tempo'
+  }];
+  const plans = [{
+    name: 'Gratuito',
+    price: 'R$ 0',
+    period: '/mês',
+    description: 'Para começar a explorar',
+    features: ['5 predições/dia', 'Estatísticas básicas', 'Dashboard personalizado'],
+    cta: 'Começar Grátis',
+    popular: false
+  }, {
+    name: 'Pro',
+    price: 'R$ 29,90',
+    period: '/mês',
+    description: 'Para apostadores sérios',
+    features: ['50 predições/dia', 'Alertas Telegram', 'Estatísticas avançadas', 'Histórico completo', 'Suporte prioritário'],
+    cta: 'Assinar Pro',
+    popular: true
+  }, {
+    name: 'Premium',
+    price: 'R$ 79,90',
+    period: '/mês',
+    description: 'Máximo potencial',
+    features: ['Predições ilimitadas', 'Alertas prioritários', 'Kelly Criterion', 'API access', 'Suporte VIP', 'Consultoria mensal'],
+    cta: 'Assinar Premium',
+    popular: false,
+    premium: true
+  }];
+  return <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="border-b border-border/50 bg-background/95 backdrop-blur-sm sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -136,7 +111,7 @@ export default function Landing() {
           {/* Social proof */}
           <div className="mt-12 flex flex-wrap justify-center gap-8 text-muted-foreground">
             <div className="text-center">
-              <div className="text-3xl font-bold text-foreground">68%</div>
+              <div className="text-3xl font-bold text-foreground">%</div>
               <div className="text-sm">Taxa de acerto</div>
             </div>
             <div className="text-center">
@@ -164,8 +139,7 @@ export default function Landing() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {features.map((feature, index) => (
-              <Card key={index} className="border-border/50 hover:border-accent-emerald/50 transition-colors">
+            {features.map((feature, index) => <Card key={index} className="border-border/50 hover:border-accent-emerald/50 transition-colors">
                 <CardContent className="p-6">
                   <div className="w-12 h-12 rounded-lg bg-accent-emerald/10 flex items-center justify-center mb-4">
                     <feature.icon className="w-6 h-6 text-accent-emerald" />
@@ -173,8 +147,7 @@ export default function Landing() {
                   <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
                   <p className="text-muted-foreground">{feature.description}</p>
                 </CardContent>
-              </Card>
-            ))}
+              </Card>)}
           </div>
         </div>
       </section>
@@ -192,23 +165,15 @@ export default function Landing() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            {plans.map((plan, index) => (
-              <Card 
-                key={index} 
-                className={`relative ${plan.popular ? 'border-accent-emerald shadow-lg scale-105' : plan.premium ? 'border-accent-purple/50' : 'border-border/50'}`}
-              >
-                {plan.popular && (
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+            {plans.map((plan, index) => <Card key={index} className={`relative ${plan.popular ? 'border-accent-emerald shadow-lg scale-105' : plan.premium ? 'border-accent-purple/50' : 'border-border/50'}`}>
+                {plan.popular && <div className="absolute -top-3 left-1/2 -translate-x-1/2">
                     <Badge className="bg-accent-emerald">Mais Popular</Badge>
-                  </div>
-                )}
-                {plan.premium && (
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                  </div>}
+                {plan.premium && <div className="absolute -top-3 left-1/2 -translate-x-1/2">
                     <Badge className="bg-accent-purple">
                       <Crown className="w-3 h-3 mr-1" /> Premium
                     </Badge>
-                  </div>
-                )}
+                  </div>}
                 <CardHeader className="text-center pb-4">
                   <CardTitle className="text-xl">{plan.name}</CardTitle>
                   <CardDescription>{plan.description}</CardDescription>
@@ -219,24 +184,18 @@ export default function Landing() {
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <ul className="space-y-3">
-                    {plan.features.map((feature, i) => (
-                      <li key={i} className="flex items-center gap-2">
+                    {plan.features.map((feature, i) => <li key={i} className="flex items-center gap-2">
                         <CheckCircle className={`w-4 h-4 ${plan.premium ? 'text-accent-purple' : 'text-accent-emerald'}`} />
                         <span className="text-sm">{feature}</span>
-                      </li>
-                    ))}
+                      </li>)}
                   </ul>
                   <Link to="/register">
-                    <Button 
-                      className={`w-full ${plan.popular ? 'bg-accent-emerald hover:bg-accent-emerald/90' : plan.premium ? 'bg-accent-purple hover:bg-accent-purple/90' : ''}`}
-                      variant={plan.popular || plan.premium ? 'default' : 'outline'}
-                    >
+                    <Button className={`w-full ${plan.popular ? 'bg-accent-emerald hover:bg-accent-emerald/90' : plan.premium ? 'bg-accent-purple hover:bg-accent-purple/90' : ''}`} variant={plan.popular || plan.premium ? 'default' : 'outline'}>
                       {plan.cta}
                     </Button>
                   </Link>
                 </CardContent>
-              </Card>
-            ))}
+              </Card>)}
           </div>
         </div>
       </section>
@@ -274,6 +233,5 @@ export default function Landing() {
           </div>
         </div>
       </footer>
-    </div>
-  );
+    </div>;
 }
