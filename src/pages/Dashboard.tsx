@@ -1,240 +1,204 @@
 import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { 
-  TrendingUp, 
-  LogOut, 
-  Target, 
-  Trophy, 
-  History, 
-  Settings,
-  Crown,
-  Zap,
-  BarChart3,
-  Bell
+import {
+  Zap, LogOut, MessageCircle, Bot, Sparkles, BarChart3,
+  Settings, Users, TrendingUp, DollarSign, Send, Activity,
+  ArrowUpRight, CheckCircle2, Clock, Megaphone
 } from 'lucide-react';
 import { Link, Navigate } from 'react-router-dom';
-import { Skeleton } from '@/components/ui/skeleton';
+
+const navItems = [
+  { icon: BarChart3, label: 'Dashboard', active: true },
+  { icon: Users, label: 'Leads' },
+  { icon: Bot, label: 'Recuperação IA' },
+  { icon: Sparkles, label: 'Criativos IA' },
+  { icon: MessageCircle, label: 'WhatsApp' },
+  { icon: Megaphone, label: 'Campanhas' },
+  { icon: Activity, label: 'Analytics' },
+  { icon: Settings, label: 'Configurações' },
+];
+
+const stats = [
+  { label: 'Leads recuperados', value: '1.284', delta: '+24%', icon: Users },
+  { label: 'Receita gerada', value: 'R$ 87.430', delta: '+38%', icon: DollarSign },
+  { label: 'Mensagens enviadas', value: '8.921', delta: '+15%', icon: Send },
+  { label: 'Taxa de resposta', value: '64%', delta: '+12%', icon: TrendingUp },
+];
+
+const chartData = [42, 58, 51, 67, 60, 78, 72, 85, 79, 91, 86, 98, 92, 100];
+
+const recentLeads = [
+  { name: 'Carlos Mendes', status: 'Convertido', value: 'R$ 297', time: '2min', color: 'text-[#10B981]' },
+  { name: 'Mariana Silva', status: 'Respondeu', value: 'R$ 197', time: '8min', color: 'text-blue-400' },
+  { name: 'João Pereira', status: 'Em follow-up', value: 'R$ 497', time: '14min', color: 'text-yellow-400' },
+  { name: 'Beatriz Costa', status: 'Convertido', value: 'R$ 197', time: '23min', color: 'text-[#10B981]' },
+  { name: 'Rafael Souza', status: 'Aguardando', value: 'R$ 97', time: '38min', color: 'text-white/50' },
+];
 
 export default function Dashboard() {
-  const { user, profile, subscription, loading, signOut } = useAuth();
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-background p-6">
-        <div className="max-w-7xl mx-auto space-y-6">
-          <Skeleton className="h-20 w-full" />
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <Skeleton className="h-32" />
-            <Skeleton className="h-32" />
-            <Skeleton className="h-32" />
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (!user) {
-    return <Navigate to="/login" replace />;
-  }
-
-  const planName = subscription?.plan?.display_name || 'Gratuito';
-  const predictionsLimit = subscription?.plan?.predictions_per_day || 5;
-  const isPro = subscription?.plan?.name === 'pro';
-  const isPremium = subscription?.plan?.name === 'premium';
-
-  const stats = [
-    { 
-      label: 'Predições Hoje', 
-      value: '3', 
-      limit: predictionsLimit === -1 ? '∞' : predictionsLimit.toString(),
-      icon: Target,
-      color: 'text-accent-blue'
-    },
-    { 
-      label: 'Taxa de Acerto', 
-      value: '68%', 
-      icon: Trophy,
-      color: 'text-accent-emerald'
-    },
-    { 
-      label: 'Lucro Mensal', 
-      value: '+R$ 850', 
-      icon: TrendingUp,
-      color: 'text-accent-purple'
-    },
-  ];
-
-  const quickActions = [
-    { label: 'Nova Predição', icon: Zap, href: '/predict', primary: true },
-    { label: 'Histórico', icon: History, href: '/history' },
-    { label: 'Estatísticas', icon: BarChart3, href: '/stats' },
-    { label: 'Configurações', icon: Settings, href: '/settings' },
-  ];
+  const { user, profile, signOut } = useAuth();
+  if (!user) return <Navigate to="/login" replace />;
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <Link to="/" className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-accent-emerald flex items-center justify-center">
-                <TrendingUp className="w-5 h-5 text-white" />
-              </div>
-              <span className="font-bold text-lg">BetPredict AI</span>
-            </Link>
-
-            <div className="flex items-center gap-4">
-              <Button variant="ghost" size="icon">
-                <Bell className="w-5 h-5" />
-              </Button>
-              <div className="flex items-center gap-3">
-                <div className="text-right hidden sm:block">
-                  <p className="text-sm font-medium">{profile?.display_name || user.email}</p>
-                  <Badge variant={isPremium ? 'default' : isPro ? 'secondary' : 'outline'} className="text-xs">
-                    {isPremium && <Crown className="w-3 h-3 mr-1" />}
-                    {planName}
-                  </Badge>
-                </div>
-                <Button variant="ghost" size="icon" onClick={signOut}>
-                  <LogOut className="w-5 h-5" />
-                </Button>
-              </div>
+    <div className="min-h-screen bg-[#0F172A] text-white flex">
+      {/* Sidebar */}
+      <aside className="w-64 border-r border-white/5 bg-[#0a0f1c]/80 backdrop-blur-xl flex flex-col">
+        <Link to="/" className="flex items-center gap-2 px-6 h-16 border-b border-white/5">
+          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#10B981] to-[#059669] flex items-center justify-center shadow-[0_0_15px_rgba(16,185,129,0.4)]">
+            <Zap className="w-4 h-4 text-white" fill="white" />
+          </div>
+          <span className="font-bold tracking-tight">LeadVolt <span className="text-[#10B981]">AI</span></span>
+        </Link>
+        <nav className="flex-1 p-3 space-y-1">
+          {navItems.map((item) => (
+            <button
+              key={item.label}
+              className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all ${
+                item.active
+                  ? 'bg-[#10B981]/10 text-[#10B981] border border-[#10B981]/20 shadow-[0_0_15px_rgba(16,185,129,0.15)]'
+                  : 'text-white/60 hover:text-white hover:bg-white/5'
+              }`}
+            >
+              <item.icon className="w-4 h-4" />
+              <span>{item.label}</span>
+            </button>
+          ))}
+        </nav>
+        <div className="p-3 border-t border-white/5">
+          <div className="flex items-center gap-3 px-3 py-2 rounded-lg bg-white/[0.03] border border-white/5">
+            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#10B981] to-emerald-700 flex items-center justify-center text-xs font-bold">
+              {(profile?.display_name || user.email || '?').charAt(0).toUpperCase()}
             </div>
+            <div className="flex-1 min-w-0">
+              <div className="text-sm font-medium truncate">{profile?.display_name || 'Usuário'}</div>
+              <div className="text-xs text-white/40 truncate">{user.email}</div>
+            </div>
+            <Button variant="ghost" size="icon" onClick={signOut} className="h-8 w-8 text-white/50 hover:text-white hover:bg-white/5">
+              <LogOut className="w-4 h-4" />
+            </Button>
           </div>
         </div>
-      </header>
+      </aside>
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
-        {/* Welcome */}
-        <div>
-          <h1 className="text-3xl font-bold">
-            Olá, {profile?.display_name?.split(' ')[0] || 'Apostador'}! 👋
-          </h1>
-          <p className="text-muted-foreground mt-1">
-            Pronto para fazer predições inteligentes hoje?
-          </p>
-        </div>
+      {/* Main */}
+      <main className="flex-1 overflow-auto">
+        <header className="h-16 border-b border-white/5 px-8 flex items-center justify-between bg-[#0F172A]/70 backdrop-blur-xl sticky top-0 z-10">
+          <div>
+            <h1 className="font-bold">Visão geral</h1>
+            <p className="text-xs text-white/50">Acompanhe sua operação em tempo real</p>
+          </div>
+          <div className="flex items-center gap-3">
+            <Badge className="bg-[#10B981]/10 text-[#10B981] border-[#10B981]/20 hover:bg-[#10B981]/15">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#10B981] mr-2 animate-pulse" />
+              WhatsApp conectado
+            </Badge>
+            <Button className="bg-[#10B981] hover:bg-[#10B981]/90 text-white shadow-[0_0_20px_rgba(16,185,129,0.35)]">
+              <Sparkles className="w-4 h-4 mr-2" /> Gerar criativo IA
+            </Button>
+          </div>
+        </header>
 
-        {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {stats.map((stat, index) => (
-            <Card key={index} className="border-border/50">
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm text-muted-foreground">{stat.label}</p>
-                    <div className="flex items-baseline gap-1 mt-1">
-                      <span className="text-3xl font-bold">{stat.value}</span>
-                      {stat.limit && (
-                        <span className="text-sm text-muted-foreground">/ {stat.limit}</span>
-                      )}
-                    </div>
+        <div className="p-8 space-y-6">
+          {/* Welcome */}
+          <div>
+            <h2 className="text-3xl font-black tracking-tight">
+              Olá, {profile?.display_name?.split(' ')[0] || 'pronto para faturar'} 👋
+            </h2>
+            <p className="text-white/50 mt-1">A IA recuperou <span className="text-[#10B981] font-semibold">R$ 4.280</span> nas últimas 24h.</p>
+          </div>
+
+          {/* Stats */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {stats.map((s, i) => (
+              <div key={i} className="rounded-2xl border border-white/10 bg-gradient-to-br from-white/[0.05] to-white/[0.02] backdrop-blur p-5 hover:border-[#10B981]/30 transition-colors">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="w-9 h-9 rounded-lg bg-[#10B981]/10 border border-[#10B981]/20 flex items-center justify-center">
+                    <s.icon className="w-4 h-4 text-[#10B981]" />
                   </div>
-                  <div className={`p-3 rounded-lg bg-muted ${stat.color}`}>
-                    <stat.icon className="w-6 h-6" />
-                  </div>
+                  <span className="text-xs text-[#10B981] flex items-center gap-1 font-medium">
+                    <ArrowUpRight className="w-3 h-3" /> {s.delta}
+                  </span>
                 </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+                <div className="text-2xl font-bold">{s.value}</div>
+                <div className="text-xs text-white/50 mt-1">{s.label}</div>
+              </div>
+            ))}
+          </div>
 
-        {/* Quick Actions */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {quickActions.map((action, index) => (
-            <Link key={index} to={action.href}>
-              <Card className={`border-border/50 hover:border-accent-emerald/50 transition-colors cursor-pointer ${action.primary ? 'bg-accent-emerald text-white' : ''}`}>
-                <CardContent className="p-4 flex items-center gap-3">
-                  <action.icon className="w-5 h-5" />
-                  <span className="font-medium">{action.label}</span>
-                </CardContent>
-              </Card>
-            </Link>
-          ))}
-        </div>
-
-        {/* Main Content */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Today's Matches */}
-          <Card className="lg:col-span-2 border-border/50">
-            <CardHeader>
-              <CardTitle>Jogos de Hoje</CardTitle>
-              <CardDescription>Partidas disponíveis para predição</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {[
-                  { home: 'Flamengo', away: 'Palmeiras', league: 'Brasileirão', time: '16:00', confidence: 72 },
-                  { home: 'Real Madrid', away: 'Barcelona', league: 'La Liga', time: '17:00', confidence: 65 },
-                  { home: 'Liverpool', away: 'Man City', league: 'Premier League', time: '13:30', confidence: 58 },
-                ].map((match, index) => (
-                  <div key={index} className="flex items-center justify-between p-4 rounded-lg bg-muted/50 hover:bg-muted transition-colors">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2">
-                        <span className="font-medium">{match.home}</span>
-                        <span className="text-muted-foreground">vs</span>
-                        <span className="font-medium">{match.away}</span>
-                      </div>
-                      <div className="flex items-center gap-2 mt-1">
-                        <Badge variant="outline" className="text-xs">{match.league}</Badge>
-                        <span className="text-xs text-muted-foreground">{match.time}</span>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <div className="text-sm text-muted-foreground">Confiança</div>
-                      <div className={`font-bold ${match.confidence >= 70 ? 'text-accent-emerald' : match.confidence >= 60 ? 'text-accent-blue' : 'text-muted-foreground'}`}>
-                        {match.confidence}%
-                      </div>
-                    </div>
-                    <Button variant="ghost" size="sm" className="ml-4">
-                      <Zap className="w-4 h-4" />
-                    </Button>
+          {/* Chart + Activity */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            <div className="lg:col-span-2 rounded-2xl border border-white/10 bg-gradient-to-br from-white/[0.05] to-white/[0.02] backdrop-blur p-6">
+              <div className="flex items-center justify-between mb-6">
+                <div>
+                  <h3 className="font-bold">Receita recuperada</h3>
+                  <p className="text-xs text-white/50">Últimos 14 dias</p>
+                </div>
+                <Badge variant="outline" className="border-white/10 bg-white/5 text-white/70">+38% vs período anterior</Badge>
+              </div>
+              <div className="h-56 flex items-end gap-2">
+                {chartData.map((h, i) => (
+                  <div key={i} className="flex-1 group relative">
+                    <div
+                      className="w-full rounded-t-md bg-gradient-to-t from-[#10B981]/20 to-[#10B981] transition-all group-hover:from-[#10B981]/40 group-hover:shadow-[0_0_15px_rgba(16,185,129,0.5)]"
+                      style={{ height: `${h}%` }}
+                    />
                   </div>
                 ))}
               </div>
-            </CardContent>
-          </Card>
+            </div>
 
-          {/* Upgrade Card */}
-          {!isPremium && (
-            <Card className="border-accent-purple/30 bg-gradient-to-br from-accent-purple/5 to-accent-blue/5">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Crown className="w-5 h-5 text-accent-purple" />
-                  Upgrade para Premium
-                </CardTitle>
-                <CardDescription>
-                  Desbloqueie todo o potencial do BetPredict AI
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <ul className="space-y-2 text-sm">
-                  <li className="flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-accent-purple" />
-                    Predições ilimitadas
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-accent-purple" />
-                    Alertas via Telegram
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-accent-purple" />
-                    Kelly Criterion
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-accent-purple" />
-                    API access
-                  </li>
-                </ul>
-                <Button className="w-full bg-accent-purple hover:bg-accent-purple/90">
-                  Fazer Upgrade
-                </Button>
-              </CardContent>
-            </Card>
-          )}
+            <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-white/[0.05] to-white/[0.02] backdrop-blur p-6">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="font-bold">Atividade recente</h3>
+                <Activity className="w-4 h-4 text-[#10B981]" />
+              </div>
+              <div className="space-y-3">
+                {recentLeads.map((l, i) => (
+                  <div key={i} className="flex items-center gap-3 p-2 rounded-lg hover:bg-white/[0.03] transition">
+                    <div className="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-xs font-medium">
+                      {l.name.charAt(0)}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="text-sm font-medium truncate">{l.name}</div>
+                      <div className={`text-xs ${l.color}`}>{l.status}</div>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-sm font-semibold">{l.value}</div>
+                      <div className="text-xs text-white/40 flex items-center gap-1 justify-end">
+                        <Clock className="w-3 h-3" /> {l.time}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* AI panel */}
+          <div className="rounded-2xl border border-[#10B981]/20 bg-gradient-to-br from-[#10B981]/10 via-white/[0.03] to-transparent backdrop-blur p-6 shadow-[0_0_40px_rgba(16,185,129,0.1)]">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 rounded-xl bg-[#10B981]/15 border border-[#10B981]/30 flex items-center justify-center shadow-[0_0_20px_rgba(16,185,129,0.3)]">
+                  <Bot className="w-6 h-6 text-[#10B981]" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2 mb-1">
+                    <h3 className="font-bold">A IA encontrou 47 leads quentes para recuperar</h3>
+                    <Badge className="bg-[#10B981]/15 text-[#10B981] border-[#10B981]/30">
+                      <CheckCircle2 className="w-3 h-3 mr-1" /> Pronto
+                    </Badge>
+                  </div>
+                  <p className="text-sm text-white/60">
+                    Sequência personalizada com gatilhos de urgência e prova social. Receita estimada: <span className="text-[#10B981] font-semibold">R$ 6.420</span>.
+                  </p>
+                </div>
+              </div>
+              <Button className="bg-[#10B981] hover:bg-[#10B981]/90 text-white shadow-[0_0_20px_rgba(16,185,129,0.4)]">
+                Disparar campanha <ArrowUpRight className="w-4 h-4 ml-2" />
+              </Button>
+            </div>
+          </div>
         </div>
       </main>
     </div>

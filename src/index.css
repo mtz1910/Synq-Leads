@@ -36,7 +36,8 @@
 
   /* Simplified accent colors */
   --accent-blue: #2563eb;
-  --accent-emerald: #059669;
+  --accent-emerald: #10B981;
+  --accent-emerald-glow: rgba(16, 185, 129, 0.35);
   --accent-purple: #7c3aed;
 
   --radius: 0.75rem;
