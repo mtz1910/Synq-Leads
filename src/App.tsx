@@ -6,7 +6,15 @@ import Landing from '@/pages/Landing';
 import Login from '@/pages/Login';
 import Register from '@/pages/Register';
 import Dashboard from '@/pages/Dashboard';
+import Leads from '@/pages/Leads';
+import RecuperacaoIA from '@/pages/RecuperacaoIA';
+import CriativosIA from '@/pages/CriativosIA';
+import WhatsApp from '@/pages/WhatsApp';
+import Campanhas from '@/pages/Campanhas';
+import Analytics from '@/pages/Analytics';
+import Configuracoes from '@/pages/Configuracoes';
 import NotFound from '@/pages/NotFound';
+import ScrollToTop from '@/components/ScrollToTop';
 
 const queryClient = new QueryClient();
 
@@ -68,14 +76,14 @@ function AppRoutes() {
           </PublicRoute>
         } 
       />
-      <Route 
-        path="/dashboard" 
-        element={
-          <ProtectedRoute>
-            <Dashboard />
-          </ProtectedRoute>
-        } 
-      />
+      <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+      <Route path="/leads" element={<ProtectedRoute><Leads /></ProtectedRoute>} />
+      <Route path="/recuperacao" element={<ProtectedRoute><RecuperacaoIA /></ProtectedRoute>} />
+      <Route path="/criativos" element={<ProtectedRoute><CriativosIA /></ProtectedRoute>} />
+      <Route path="/whatsapp" element={<ProtectedRoute><WhatsApp /></ProtectedRoute>} />
+      <Route path="/campanhas" element={<ProtectedRoute><Campanhas /></ProtectedRoute>} />
+      <Route path="/analytics" element={<ProtectedRoute><Analytics /></ProtectedRoute>} />
+      <Route path="/configuracoes" element={<ProtectedRoute><Configuracoes /></ProtectedRoute>} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
@@ -86,6 +94,7 @@ export default function App() {
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <AuthProvider>
+          <ScrollToTop />
           <div className="min-h-screen bg-background text-foreground">
             <AppRoutes />
           </div>
