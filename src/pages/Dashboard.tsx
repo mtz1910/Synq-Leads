@@ -1,23 +1,11 @@
+import DashboardLayout from '@/components/DashboardLayout';
 import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import {
-  Zap, LogOut, MessageCircle, Bot, Sparkles, BarChart3,
-  Settings, Users, TrendingUp, DollarSign, Send, Activity,
-  ArrowUpRight, CheckCircle2, Clock, Megaphone
+  Bot, Sparkles, Users, TrendingUp, DollarSign, Send, Activity,
+  ArrowUpRight, CheckCircle2, Clock,
 } from 'lucide-react';
-import { Link, Navigate } from 'react-router-dom';
-
-const navItems = [
-  { icon: BarChart3, label: 'Dashboard', active: true },
-  { icon: Users, label: 'Leads' },
-  { icon: Bot, label: 'Recuperação IA' },
-  { icon: Sparkles, label: 'Criativos IA' },
-  { icon: MessageCircle, label: 'WhatsApp' },
-  { icon: Megaphone, label: 'Campanhas' },
-  { icon: Activity, label: 'Analytics' },
-  { icon: Settings, label: 'Configurações' },
-];
 
 const stats = [
   { label: 'Leads recuperados', value: '1.284', delta: '+24%', icon: Users },
@@ -37,170 +25,115 @@ const recentLeads = [
 ];
 
 export default function Dashboard() {
-  const { user, profile, signOut } = useAuth();
-  if (!user) return <Navigate to="/login" replace />;
+  const { profile } = useAuth();
+  const firstName = profile?.display_name?.split(' ')[0] || 'pronto para faturar';
+
+  const headerRight = (
+    <>
+      <Badge className="bg-[#10B981]/10 text-[#10B981] border-[#10B981]/20 hover:bg-[#10B981]/15">
+        <span className="w-1.5 h-1.5 rounded-full bg-[#10B981] mr-2 animate-pulse" />
+        WhatsApp conectado
+      </Badge>
+      <Button className="bg-[#10B981] hover:bg-[#10B981]/90 text-white shadow-[0_0_20px_rgba(16,185,129,0.35)]">
+        <Sparkles className="w-4 h-4 mr-2" /> Gerar criativo IA
+      </Button>
+    </>
+  );
 
   return (
-    <div className="min-h-screen bg-[#0F172A] text-white flex">
-      {/* Sidebar */}
-      <aside className="w-64 border-r border-white/5 bg-[#0a0f1c]/80 backdrop-blur-xl flex flex-col">
-        <Link to="/" className="flex items-center gap-2 px-6 h-16 border-b border-white/5">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#10B981] to-[#059669] flex items-center justify-center shadow-[0_0_15px_rgba(16,185,129,0.4)]">
-            <Zap className="w-4 h-4 text-white" fill="white" />
-          </div>
-          <span className="font-bold tracking-tight">LeadVolt <span className="text-[#10B981]">AI</span></span>
-        </Link>
-        <nav className="flex-1 p-3 space-y-1">
-          {navItems.map((item) => (
-            <button
-              key={item.label}
-              className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all ${
-                item.active
-                  ? 'bg-[#10B981]/10 text-[#10B981] border border-[#10B981]/20 shadow-[0_0_15px_rgba(16,185,129,0.15)]'
-                  : 'text-white/60 hover:text-white hover:bg-white/5'
-              }`}
-            >
-              <item.icon className="w-4 h-4" />
-              <span>{item.label}</span>
-            </button>
+    <DashboardLayout title="Visão geral" subtitle="Acompanhe sua operação em tempo real" headerRight={headerRight}>
+      <div className="space-y-6">
+        <div>
+          <h2 className="text-3xl font-black tracking-tight">Olá, {firstName} 👋</h2>
+          <p className="text-white/50 mt-1">A IA recuperou <span className="text-[#10B981] font-semibold">R$ 4.280</span> nas últimas 24h.</p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          {stats.map((s, i) => (
+            <div key={i} className="rounded-2xl border border-white/10 bg-gradient-to-br from-white/[0.05] to-white/[0.02] backdrop-blur p-5 hover:border-[#10B981]/30 transition-colors">
+              <div className="flex items-center justify-between mb-3">
+                <div className="w-9 h-9 rounded-lg bg-[#10B981]/10 border border-[#10B981]/20 flex items-center justify-center">
+                  <s.icon className="w-4 h-4 text-[#10B981]" />
+                </div>
+                <span className="text-xs text-[#10B981] flex items-center gap-1 font-medium">
+                  <ArrowUpRight className="w-3 h-3" /> {s.delta}
+                </span>
+              </div>
+              <div className="text-2xl font-bold">{s.value}</div>
+              <div className="text-xs text-white/50 mt-1">{s.label}</div>
+            </div>
           ))}
-        </nav>
-        <div className="p-3 border-t border-white/5">
-          <div className="flex items-center gap-3 px-3 py-2 rounded-lg bg-white/[0.03] border border-white/5">
-            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#10B981] to-emerald-700 flex items-center justify-center text-xs font-bold">
-              {(profile?.display_name || user.email || '?').charAt(0).toUpperCase()}
-            </div>
-            <div className="flex-1 min-w-0">
-              <div className="text-sm font-medium truncate">{profile?.display_name || 'Usuário'}</div>
-              <div className="text-xs text-white/40 truncate">{user.email}</div>
-            </div>
-            <Button variant="ghost" size="icon" onClick={signOut} className="h-8 w-8 text-white/50 hover:text-white hover:bg-white/5">
-              <LogOut className="w-4 h-4" />
-            </Button>
-          </div>
         </div>
-      </aside>
 
-      {/* Main */}
-      <main className="flex-1 overflow-auto">
-        <header className="h-16 border-b border-white/5 px-8 flex items-center justify-between bg-[#0F172A]/70 backdrop-blur-xl sticky top-0 z-10">
-          <div>
-            <h1 className="font-bold">Visão geral</h1>
-            <p className="text-xs text-white/50">Acompanhe sua operação em tempo real</p>
-          </div>
-          <div className="flex items-center gap-3">
-            <Badge className="bg-[#10B981]/10 text-[#10B981] border-[#10B981]/20 hover:bg-[#10B981]/15">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#10B981] mr-2 animate-pulse" />
-              WhatsApp conectado
-            </Badge>
-            <Button className="bg-[#10B981] hover:bg-[#10B981]/90 text-white shadow-[0_0_20px_rgba(16,185,129,0.35)]">
-              <Sparkles className="w-4 h-4 mr-2" /> Gerar criativo IA
-            </Button>
-          </div>
-        </header>
-
-        <div className="p-8 space-y-6">
-          {/* Welcome */}
-          <div>
-            <h2 className="text-3xl font-black tracking-tight">
-              Olá, {profile?.display_name?.split(' ')[0] || 'pronto para faturar'} 👋
-            </h2>
-            <p className="text-white/50 mt-1">A IA recuperou <span className="text-[#10B981] font-semibold">R$ 4.280</span> nas últimas 24h.</p>
-          </div>
-
-          {/* Stats */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {stats.map((s, i) => (
-              <div key={i} className="rounded-2xl border border-white/10 bg-gradient-to-br from-white/[0.05] to-white/[0.02] backdrop-blur p-5 hover:border-[#10B981]/30 transition-colors">
-                <div className="flex items-center justify-between mb-3">
-                  <div className="w-9 h-9 rounded-lg bg-[#10B981]/10 border border-[#10B981]/20 flex items-center justify-center">
-                    <s.icon className="w-4 h-4 text-[#10B981]" />
-                  </div>
-                  <span className="text-xs text-[#10B981] flex items-center gap-1 font-medium">
-                    <ArrowUpRight className="w-3 h-3" /> {s.delta}
-                  </span>
-                </div>
-                <div className="text-2xl font-bold">{s.value}</div>
-                <div className="text-xs text-white/50 mt-1">{s.label}</div>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+          <div className="lg:col-span-2 rounded-2xl border border-white/10 bg-gradient-to-br from-white/[0.05] to-white/[0.02] backdrop-blur p-6">
+            <div className="flex items-center justify-between mb-6">
+              <div>
+                <h3 className="font-bold">Receita recuperada</h3>
+                <p className="text-xs text-white/50">Últimos 14 dias</p>
               </div>
-            ))}
-          </div>
-
-          {/* Chart + Activity */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-            <div className="lg:col-span-2 rounded-2xl border border-white/10 bg-gradient-to-br from-white/[0.05] to-white/[0.02] backdrop-blur p-6">
-              <div className="flex items-center justify-between mb-6">
-                <div>
-                  <h3 className="font-bold">Receita recuperada</h3>
-                  <p className="text-xs text-white/50">Últimos 14 dias</p>
-                </div>
-                <Badge variant="outline" className="border-white/10 bg-white/5 text-white/70">+38% vs período anterior</Badge>
-              </div>
-              <div className="h-56 flex items-end gap-2">
-                {chartData.map((h, i) => (
-                  <div key={i} className="flex-1 group relative">
-                    <div
-                      className="w-full rounded-t-md bg-gradient-to-t from-[#10B981]/20 to-[#10B981] transition-all group-hover:from-[#10B981]/40 group-hover:shadow-[0_0_15px_rgba(16,185,129,0.5)]"
-                      style={{ height: `${h}%` }}
-                    />
-                  </div>
-                ))}
-              </div>
+              <Badge variant="outline" className="border-white/10 bg-white/5 text-white/70">+38% vs período anterior</Badge>
             </div>
-
-            <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-white/[0.05] to-white/[0.02] backdrop-blur p-6">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="font-bold">Atividade recente</h3>
-                <Activity className="w-4 h-4 text-[#10B981]" />
-              </div>
-              <div className="space-y-3">
-                {recentLeads.map((l, i) => (
-                  <div key={i} className="flex items-center gap-3 p-2 rounded-lg hover:bg-white/[0.03] transition">
-                    <div className="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-xs font-medium">
-                      {l.name.charAt(0)}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="text-sm font-medium truncate">{l.name}</div>
-                      <div className={`text-xs ${l.color}`}>{l.status}</div>
-                    </div>
-                    <div className="text-right">
-                      <div className="text-sm font-semibold">{l.value}</div>
-                      <div className="text-xs text-white/40 flex items-center gap-1 justify-end">
-                        <Clock className="w-3 h-3" /> {l.time}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
+            <div className="h-56 flex items-end gap-2">
+              {chartData.map((h, i) => (
+                <div key={i} className="flex-1 group">
+                  <div className="w-full rounded-t-md bg-gradient-to-t from-[#10B981]/20 to-[#10B981] transition-all group-hover:shadow-[0_0_15px_rgba(16,185,129,0.5)]" style={{ height: `${h}%` }} />
+                </div>
+              ))}
             </div>
           </div>
 
-          {/* AI panel */}
-          <div className="rounded-2xl border border-[#10B981]/20 bg-gradient-to-br from-[#10B981]/10 via-white/[0.03] to-transparent backdrop-blur p-6 shadow-[0_0_40px_rgba(16,185,129,0.1)]">
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-              <div className="flex items-start gap-4">
-                <div className="w-12 h-12 rounded-xl bg-[#10B981]/15 border border-[#10B981]/30 flex items-center justify-center shadow-[0_0_20px_rgba(16,185,129,0.3)]">
-                  <Bot className="w-6 h-6 text-[#10B981]" />
-                </div>
-                <div>
-                  <div className="flex items-center gap-2 mb-1">
-                    <h3 className="font-bold">A IA encontrou 47 leads quentes para recuperar</h3>
-                    <Badge className="bg-[#10B981]/15 text-[#10B981] border-[#10B981]/30">
-                      <CheckCircle2 className="w-3 h-3 mr-1" /> Pronto
-                    </Badge>
+          <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-white/[0.05] to-white/[0.02] backdrop-blur p-6">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="font-bold">Atividade recente</h3>
+              <Activity className="w-4 h-4 text-[#10B981]" />
+            </div>
+            <div className="space-y-3">
+              {recentLeads.map((l, i) => (
+                <div key={i} className="flex items-center gap-3 p-2 rounded-lg hover:bg-white/[0.03] transition">
+                  <div className="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-xs font-medium">
+                    {l.name.charAt(0)}
                   </div>
-                  <p className="text-sm text-white/60">
-                    Sequência personalizada com gatilhos de urgência e prova social. Receita estimada: <span className="text-[#10B981] font-semibold">R$ 6.420</span>.
-                  </p>
+                  <div className="flex-1 min-w-0">
+                    <div className="text-sm font-medium truncate">{l.name}</div>
+                    <div className={`text-xs ${l.color}`}>{l.status}</div>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-sm font-semibold">{l.value}</div>
+                    <div className="text-xs text-white/40 flex items-center gap-1 justify-end">
+                      <Clock className="w-3 h-3" /> {l.time}
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <Button className="bg-[#10B981] hover:bg-[#10B981]/90 text-white shadow-[0_0_20px_rgba(16,185,129,0.4)]">
-                Disparar campanha <ArrowUpRight className="w-4 h-4 ml-2" />
-              </Button>
+              ))}
             </div>
           </div>
         </div>
-      </main>
-    </div>
+
+        <div className="rounded-2xl border border-[#10B981]/20 bg-gradient-to-br from-[#10B981]/10 via-white/[0.03] to-transparent backdrop-blur p-6 shadow-[0_0_40px_rgba(16,185,129,0.1)]">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div className="flex items-start gap-4">
+              <div className="w-12 h-12 rounded-xl bg-[#10B981]/15 border border-[#10B981]/30 flex items-center justify-center shadow-[0_0_20px_rgba(16,185,129,0.3)]">
+                <Bot className="w-6 h-6 text-[#10B981]" />
+              </div>
+              <div>
+                <div className="flex items-center gap-2 mb-1">
+                  <h3 className="font-bold">A IA encontrou 47 leads quentes para recuperar</h3>
+                  <Badge className="bg-[#10B981]/15 text-[#10B981] border-[#10B981]/30">
+                    <CheckCircle2 className="w-3 h-3 mr-1" /> Pronto
+                  </Badge>
+                </div>
+                <p className="text-sm text-white/60">
+                  Sequência personalizada com gatilhos de urgência e prova social. Receita estimada: <span className="text-[#10B981] font-semibold">R$ 6.420</span>.
+                </p>
+              </div>
+            </div>
+            <Button className="bg-[#10B981] hover:bg-[#10B981]/90 text-white shadow-[0_0_20px_rgba(16,185,129,0.4)]">
+              Disparar campanha <ArrowUpRight className="w-4 h-4 ml-2" />
+            </Button>
+          </div>
+        </div>
+      </div>
+    </DashboardLayout>
   );
 }

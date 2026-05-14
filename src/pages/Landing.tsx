@@ -36,9 +36,9 @@ const plans = [
 
 export default function Landing() {
   return (
-    <div className="min-h-screen bg-[#0F172A] text-white relative overflow-hidden">
+    <div className="min-h-screen bg-[#0F172A] text-white relative overflow-x-hidden">
       {/* Background glow */}
-      <div className="pointer-events-none absolute inset-0">
+      <div className="pointer-events-none fixed inset-0 z-0">
         <div className="absolute top-[-20%] left-1/2 -translate-x-1/2 w-[900px] h-[900px] rounded-full bg-[#10B981]/10 blur-[140px]" />
         <div className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] rounded-full bg-[#10B981]/5 blur-[120px]" />
       </div>
