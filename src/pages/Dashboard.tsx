@@ -110,15 +110,15 @@ export default function Dashboard() {
           </div>
         </div>
 
-        <div className="rounded-2xl border border-[#10B981]/20 bg-gradient-to-br from-[#10B981]/10 via-white/[0.03] to-transparent backdrop-blur p-6 shadow-[0_0_40px_rgba(16,185,129,0.1)]">
+        <div className="rounded-2xl border border-[#10B981]/20 bg-gradient-to-br from-[#10B981]/10 via-white/[0.03] to-transparent backdrop-blur p-5 sm:p-6 shadow-[0_0_40px_rgba(16,185,129,0.1)]">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div className="flex items-start gap-4">
-              <div className="w-12 h-12 rounded-xl bg-[#10B981]/15 border border-[#10B981]/30 flex items-center justify-center shadow-[0_0_20px_rgba(16,185,129,0.3)]">
-                <Bot className="w-6 h-6 text-[#10B981]" />
+            <div className="flex items-start gap-3 sm:gap-4 min-w-0">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-[#10B981]/15 border border-[#10B981]/30 flex items-center justify-center shadow-[0_0_20px_rgba(16,185,129,0.3)] shrink-0">
+                <Bot className="w-5 h-5 sm:w-6 sm:h-6 text-[#10B981]" />
               </div>
-              <div>
-                <div className="flex items-center gap-2 mb-1">
-                  <h3 className="font-bold">A IA encontrou 47 leads quentes para recuperar</h3>
+              <div className="min-w-0">
+                <div className="flex flex-wrap items-center gap-2 mb-1">
+                  <h3 className="font-bold text-sm sm:text-base">A IA encontrou 47 leads quentes para recuperar</h3>
                   <Badge className="bg-[#10B981]/15 text-[#10B981] border-[#10B981]/30">
                     <CheckCircle2 className="w-3 h-3 mr-1" /> Pronto
                   </Badge>
@@ -128,7 +128,7 @@ export default function Dashboard() {
                 </p>
               </div>
             </div>
-            <Button className="bg-[#10B981] hover:bg-[#10B981]/90 text-white shadow-[0_0_20px_rgba(16,185,129,0.4)]">
+            <Button className="bg-[#10B981] hover:bg-[#10B981]/90 text-white shadow-[0_0_20px_rgba(16,185,129,0.4)] w-full md:w-auto shrink-0">
               Disparar campanha <ArrowUpRight className="w-4 h-4 ml-2" />
             </Button>
           </div>
