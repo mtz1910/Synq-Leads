@@ -28,7 +28,7 @@ export default function Register() {
       toast.error('Erro ao criar conta', { description: error.message });
       setIsLoading(false);
     } else {
-      toast.success('Conta criada! Bem-vindo ao LeadVolt AI 🚀');
+      toast.success('Conta criada! Bem-vindo ao Synq Leads 🚀');
       navigate('/dashboard');
     }
   };
@@ -52,7 +52,7 @@ export default function Register() {
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#10B981] to-[#059669] flex items-center justify-center shadow-[0_0_20px_rgba(16,185,129,0.4)]">
               <Zap className="w-5 h-5 text-white" fill="white" />
             </div>
-            <span className="text-2xl font-bold tracking-tight">LeadVolt <span className="text-[#10B981]">AI</span></span>
+            <span className="text-2xl font-bold tracking-tight">Synq <span className="text-[#10B981]">Leads</span></span>
           </Link>
         </div>
 
