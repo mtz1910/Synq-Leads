@@ -22,21 +22,21 @@ export default function Campanhas() {
         <div className="grid md:grid-cols-2 gap-4">
           {campaigns.map((c, i) => (
             <div key={i} className="rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur p-5 hover:border-[#10B981]/30 transition">
-              <div className="flex items-start justify-between mb-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-lg bg-[#10B981]/10 border border-[#10B981]/20 flex items-center justify-center">
+              <div className="flex items-start justify-between gap-3 mb-4 flex-wrap">
+                <div className="flex items-center gap-3 min-w-0 flex-1">
+                  <div className="w-10 h-10 rounded-lg bg-[#10B981]/10 border border-[#10B981]/20 flex items-center justify-center shrink-0">
                     <Megaphone className="w-5 h-5 text-[#10B981]" />
                   </div>
-                  <div>
-                    <div className="font-semibold">{c.name}</div>
-                    <div className="text-xs text-white/50">{c.sent} mensagens enviadas</div>
+                  <div className="min-w-0">
+                    <div className="font-semibold truncate">{c.name}</div>
+                    <div className="text-xs text-white/50 truncate">{c.sent} mensagens enviadas</div>
                   </div>
                 </div>
-                <Badge className={
+                <Badge className={`shrink-0 ${
                   c.status === 'Ativa' ? 'bg-[#10B981]/10 text-[#10B981] border-[#10B981]/20' :
                   c.status === 'Agendada' ? 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20' :
                   'bg-white/5 text-white/50 border-white/10'
-                }>{c.status}</Badge>
+                }`}>{c.status}</Badge>
               </div>
               <div className="grid grid-cols-2 gap-3 pt-4 border-t border-white/5">
                 <div>

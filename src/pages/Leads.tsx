@@ -33,7 +33,7 @@ export default function Leads() {
           </div>
         </div>
 
-        <div className="rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur overflow-hidden">
+        <div className="rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur overflow-x-auto">
           <table className="w-full text-sm">
             <thead className="bg-white/[0.03] text-white/50 text-xs uppercase tracking-wide">
               <tr>
