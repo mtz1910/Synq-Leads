@@ -8,7 +8,7 @@ import {
 } from 'lucide-react';
 
 // TODO: substituir pelo número real do WhatsApp do dono (formato internacional sem + nem espaços)
-const WHATSAPP_NUMBER = '5500000000000';
+const WHATSAPP_NUMBER = '5561995871280';
 
 const features = [
   { icon: MessageCircle, title: 'Recuperação no WhatsApp', desc: 'A IA reativa leads frios automaticamente com mensagens persuasivas, urgência e prova social.' },

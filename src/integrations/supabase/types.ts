@@ -14,6 +14,153 @@ export type Database = {
   }
   public: {
     Tables: {
+      campaigns: {
+        Row: {
+          conversion_rate: number | null
+          created_at: string
+          id: string
+          leads_count: number | null
+          name: string
+          revenue: number | null
+          sequence_type: string | null
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          conversion_rate?: number | null
+          created_at?: string
+          id?: string
+          leads_count?: number | null
+          name: string
+          revenue?: number | null
+          sequence_type?: string | null
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          conversion_rate?: number | null
+          created_at?: string
+          id?: string
+          leads_count?: number | null
+          name?: string
+          revenue?: number | null
+          sequence_type?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      creatives: {
+        Row: {
+          briefing: Json | null
+          content: string
+          created_at: string
+          id: string
+          type: string
+          user_id: string
+        }
+        Insert: {
+          briefing?: Json | null
+          content: string
+          created_at?: string
+          id?: string
+          type: string
+          user_id: string
+        }
+        Update: {
+          briefing?: Json | null
+          content?: string
+          created_at?: string
+          id?: string
+          type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      leads: {
+        Row: {
+          created_at: string
+          email: string | null
+          id: string
+          last_contact_at: string | null
+          name: string
+          notes: string | null
+          phone: string | null
+          recovered_at: string | null
+          source: string | null
+          status: string
+          updated_at: string
+          user_id: string
+          value: number | null
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          id?: string
+          last_contact_at?: string | null
+          name: string
+          notes?: string | null
+          phone?: string | null
+          recovered_at?: string | null
+          source?: string | null
+          status?: string
+          updated_at?: string
+          user_id: string
+          value?: number | null
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          id?: string
+          last_contact_at?: string | null
+          name?: string
+          notes?: string | null
+          phone?: string | null
+          recovered_at?: string | null
+          source?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string
+          value?: number | null
+        }
+        Relationships: []
+      }
+      metrics_daily: {
+        Row: {
+          created_at: string
+          date: string
+          id: string
+          leads_new: number | null
+          leads_recovered: number | null
+          messages_sent: number | null
+          revenue_recovered: number | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          date: string
+          id?: string
+          leads_new?: number | null
+          leads_recovered?: number | null
+          messages_sent?: number | null
+          revenue_recovered?: number | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          date?: string
+          id?: string
+          leads_new?: number | null
+          leads_recovered?: number | null
+          messages_sent?: number | null
+          revenue_recovered?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       plans: {
         Row: {
           created_at: string
@@ -222,6 +369,39 @@ export type Database = {
         Update: {
           id?: string
           role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
+      whatsapp_connections: {
+        Row: {
+          created_at: string
+          id: string
+          label: string | null
+          messages_sent: number | null
+          phone_number: string
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          label?: string | null
+          messages_sent?: number | null
+          phone_number: string
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          label?: string | null
+          messages_sent?: number | null
+          phone_number?: string
+          status?: string
+          updated_at?: string
           user_id?: string
         }
         Relationships: []
