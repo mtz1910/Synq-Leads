@@ -1,1 +1,4 @@
 project_id = "ijbfsvkkbzkitnoqwwzz"
+
+[functions.generate-creatives]
+verify_jwt = true
