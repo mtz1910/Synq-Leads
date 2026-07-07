@@ -81,7 +81,7 @@ export default function Dashboard() {
   ];
 
   const headerRight = (
-    <Link to="/criativos-ia">
+    <Link to="/criativos">
       <Button className="bg-[#10B981] hover:bg-[#10B981]/90 text-white shadow-[0_0_20px_rgba(16,185,129,0.35)]">
         <Sparkles className="w-4 h-4 mr-2" /> Gerar criativo IA
       </Button>
