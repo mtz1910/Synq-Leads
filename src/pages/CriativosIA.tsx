@@ -47,6 +47,13 @@ export default function CriativosIA() {
 
   const copy = (t: string) => { navigator.clipboard.writeText(t); toast.success('Copiado!'); };
 
+  const remove = async (id: string) => {
+    const { error } = await supabase.from('creatives').delete().eq('id', id);
+    if (error) { toast.error(error.message); return; }
+    toast.success('Criativo excluído');
+    load();
+  };
+
   return (
     <DashboardLayout title="Criativos IA" subtitle="Gere headlines, hooks e copies de anúncio em segundos">
       <div className="grid lg:grid-cols-3 gap-6">
