@@ -89,9 +89,14 @@ export default function CriativosIA() {
                 <Badge className="bg-[#10B981]/10 text-[#10B981] border-[#10B981]/20">
                   <Sparkles className="w-3 h-3 mr-1" /> {s.type}
                 </Badge>
-                <Button size="sm" variant="ghost" onClick={() => copy(s.content)} className="text-white/60 hover:text-white hover:bg-white/5">
-                  <Copy className="w-3.5 h-3.5 mr-1" /> Copiar
-                </Button>
+                <div className="flex items-center gap-1">
+                  <Button size="sm" variant="ghost" onClick={() => copy(s.content)} className="text-white/60 hover:text-white hover:bg-white/5">
+                    <Copy className="w-3.5 h-3.5 mr-1" /> Copiar
+                  </Button>
+                  <Button size="icon" variant="ghost" onClick={() => remove(s.id)} title="Excluir" className="h-8 w-8 text-white/50 hover:text-red-400 hover:bg-red-500/10">
+                    <Trash2 className="w-3.5 h-3.5" />
+                  </Button>
+                </div>
               </div>
               <p className="text-white/85 leading-relaxed whitespace-pre-wrap">{s.content}</p>
             </div>
