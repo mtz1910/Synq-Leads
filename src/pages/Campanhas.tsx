@@ -61,7 +61,7 @@ export default function Campanhas() {
   };
 
   const dispatch = async (c: Campaign) => {
-    const { error } = await supabase.from('campaigns').update({ status: 'ativa', last_dispatched_at: new Date().toISOString() }).eq('id', c.id);
+    const { error } = await supabase.from('campaigns').update({ status: 'ativa' }).eq('id', c.id);
     if (error) { toast.error(error.message); return; }
     toast.success(`Campanha "${c.name}" disparada 🚀`);
     load();
