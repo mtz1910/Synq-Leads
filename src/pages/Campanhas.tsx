@@ -6,8 +6,15 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from '@/components/ui/dialog';
-import { Plus, Megaphone, Inbox } from 'lucide-react';
+import {
+  Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter,
+} from '@/components/ui/dialog';
+import {
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
+  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
+import { Plus, Megaphone, Inbox, Play, Pause, Send, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 
 interface Campaign {
@@ -43,6 +50,27 @@ export default function Campanhas() {
     toast.success('Campanha criada');
     setForm({ name: '', sequence_type: 'Carrinho abandonado' });
     setOpen(false);
+    load();
+  };
+
+  const setStatus = async (c: Campaign, status: string, msg: string) => {
+    const { error } = await supabase.from('campaigns').update({ status }).eq('id', c.id);
+    if (error) { toast.error(error.message); return; }
+    toast.success(msg);
+    load();
+  };
+
+  const dispatch = async (c: Campaign) => {
+    const { error } = await supabase.from('campaigns').update({ status: 'ativa' }).eq('id', c.id);
+    if (error) { toast.error(error.message); return; }
+    toast.success(`Campanha "${c.name}" disparada 🚀`);
+    load();
+  };
+
+  const remove = async (c: Campaign) => {
+    const { error } = await supabase.from('campaigns').delete().eq('id', c.id);
+    if (error) { toast.error(error.message); return; }
+    toast.success('Campanha excluída');
     load();
   };
 
@@ -89,7 +117,7 @@ export default function Campanhas() {
                   </div>
                   <Badge className={`shrink-0 ${
                     c.status === 'ativa' ? 'bg-[#10B981]/10 text-[#10B981] border-[#10B981]/20' :
-                    c.status === 'agendada' ? 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20' :
+                    c.status === 'pausada' ? 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20' :
                     'bg-white/5 text-white/50 border-white/10'
                   }`}>{c.status}</Badge>
                 </div>
@@ -102,6 +130,41 @@ export default function Campanhas() {
                     <div className="text-xs text-white/50">Receita</div>
                     <div className="font-bold mt-0.5 text-[#10B981]">{fmtBRL(Number(c.revenue ?? 0))}</div>
                   </div>
+                </div>
+                <div className="mt-4 pt-4 border-t border-white/5 flex flex-wrap gap-2">
+                  {c.status !== 'ativa' ? (
+                    <Button size="sm" onClick={() => setStatus(c, 'ativa', 'Campanha ativada')} className="bg-[#10B981] hover:bg-[#10B981]/90 text-white">
+                      <Play className="w-3.5 h-3.5 mr-1" /> Ativar
+                    </Button>
+                  ) : (
+                    <Button size="sm" onClick={() => setStatus(c, 'pausada', 'Campanha pausada')} variant="outline" className="border-yellow-500/30 bg-yellow-500/10 text-yellow-400 hover:bg-yellow-500/20 hover:text-yellow-300">
+                      <Pause className="w-3.5 h-3.5 mr-1" /> Pausar
+                    </Button>
+                  )}
+                  <Button size="sm" onClick={() => dispatch(c)} variant="outline" className="border-white/10 bg-white/5 text-white hover:bg-white/10">
+                    <Send className="w-3.5 h-3.5 mr-1" /> Disparar
+                  </Button>
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button size="sm" variant="ghost" className="text-white/50 hover:text-red-400 hover:bg-red-500/10 ml-auto">
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent className="bg-[#0F172A] border-white/10 text-white">
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Excluir campanha?</AlertDialogTitle>
+                        <AlertDialogDescription className="text-white/60">
+                          A campanha "{c.name}" e suas configurações serão removidas.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel className="bg-white/5 border-white/10 text-white hover:bg-white/10">Cancelar</AlertDialogCancel>
+                        <AlertDialogAction onClick={() => remove(c)} className="bg-red-500 hover:bg-red-600 text-white">
+                          Excluir
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
                 </div>
               </div>
             ))}

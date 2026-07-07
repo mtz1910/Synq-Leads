@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
-import { Sparkles, Copy, Wand2, Inbox } from 'lucide-react';
+import { Sparkles, Copy, Wand2, Inbox, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 
 interface Creative {
@@ -47,6 +47,13 @@ export default function CriativosIA() {
 
   const copy = (t: string) => { navigator.clipboard.writeText(t); toast.success('Copiado!'); };
 
+  const remove = async (id: string) => {
+    const { error } = await supabase.from('creatives').delete().eq('id', id);
+    if (error) { toast.error(error.message); return; }
+    toast.success('Criativo excluído');
+    load();
+  };
+
   return (
     <DashboardLayout title="Criativos IA" subtitle="Gere headlines, hooks e copies de anúncio em segundos">
       <div className="grid lg:grid-cols-3 gap-6">
@@ -82,9 +89,14 @@ export default function CriativosIA() {
                 <Badge className="bg-[#10B981]/10 text-[#10B981] border-[#10B981]/20">
                   <Sparkles className="w-3 h-3 mr-1" /> {s.type}
                 </Badge>
-                <Button size="sm" variant="ghost" onClick={() => copy(s.content)} className="text-white/60 hover:text-white hover:bg-white/5">
-                  <Copy className="w-3.5 h-3.5 mr-1" /> Copiar
-                </Button>
+                <div className="flex items-center gap-1">
+                  <Button size="sm" variant="ghost" onClick={() => copy(s.content)} className="text-white/60 hover:text-white hover:bg-white/5">
+                    <Copy className="w-3.5 h-3.5 mr-1" /> Copiar
+                  </Button>
+                  <Button size="icon" variant="ghost" onClick={() => remove(s.id)} title="Excluir" className="h-8 w-8 text-white/50 hover:text-red-400 hover:bg-red-500/10">
+                    <Trash2 className="w-3.5 h-3.5" />
+                  </Button>
+                </div>
               </div>
               <p className="text-white/85 leading-relaxed whitespace-pre-wrap">{s.content}</p>
             </div>

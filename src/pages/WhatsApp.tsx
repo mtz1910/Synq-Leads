@@ -6,8 +6,15 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from '@/components/ui/dialog';
-import { Smartphone, CheckCircle2, Plus, Inbox } from 'lucide-react';
+import {
+  Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter,
+} from '@/components/ui/dialog';
+import {
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
+  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
+import { Smartphone, CheckCircle2, Plus, Inbox, Power, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 
 interface Conn {
@@ -43,6 +50,21 @@ export default function WhatsApp() {
     load();
   };
 
+  const toggle = async (c: Conn) => {
+    const next = c.status === 'conectado' ? 'desconectado' : 'conectado';
+    const { error } = await supabase.from('whatsapp_connections').update({ status: next }).eq('id', c.id);
+    if (error) { toast.error(error.message); return; }
+    toast.success(next === 'conectado' ? 'Número conectado' : 'Número desconectado');
+    load();
+  };
+
+  const remove = async (c: Conn) => {
+    const { error } = await supabase.from('whatsapp_connections').delete().eq('id', c.id);
+    if (error) { toast.error(error.message); return; }
+    toast.success('Número removido');
+    load();
+  };
+
   return (
     <DashboardLayout title="WhatsApp" subtitle="Conecte e gerencie seus números">
       <div className="space-y-5">
@@ -74,7 +96,7 @@ export default function WhatsApp() {
           <div className="grid lg:grid-cols-2 gap-4">
             {conns.map((c) => (
               <div key={c.id} className="rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur p-6">
-                <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center justify-between mb-4 gap-2">
                   <h3 className="font-bold truncate">{c.label || 'Sem rótulo'}</h3>
                   <Badge className={c.status === 'conectado'
                     ? 'bg-[#10B981]/10 text-[#10B981] border-[#10B981]/20'
@@ -91,6 +113,35 @@ export default function WhatsApp() {
                     <div className="text-xs text-white/50">{(c.messages_sent ?? 0).toLocaleString('pt-BR')} mensagens enviadas</div>
                   </div>
                 </div>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  <Button size="sm" onClick={() => toggle(c)} className={c.status === 'conectado'
+                    ? 'bg-yellow-500/15 text-yellow-400 hover:bg-yellow-500/25 border border-yellow-500/30'
+                    : 'bg-[#10B981] hover:bg-[#10B981]/90 text-white'}>
+                    <Power className="w-3.5 h-3.5 mr-1" />
+                    {c.status === 'conectado' ? 'Desconectar' : 'Conectar'}
+                  </Button>
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button size="sm" variant="ghost" className="text-white/50 hover:text-red-400 hover:bg-red-500/10 ml-auto">
+                        <Trash2 className="w-3.5 h-3.5 mr-1" /> Remover
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent className="bg-[#0F172A] border-white/10 text-white">
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Remover número?</AlertDialogTitle>
+                        <AlertDialogDescription className="text-white/60">
+                          {c.phone_number} será desconectado e removido da sua conta.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel className="bg-white/5 border-white/10 text-white hover:bg-white/10">Cancelar</AlertDialogCancel>
+                        <AlertDialogAction onClick={() => remove(c)} className="bg-red-500 hover:bg-red-600 text-white">
+                          Remover
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                </div>
               </div>
             ))}
           </div>
@@ -99,3 +150,4 @@ export default function WhatsApp() {
     </DashboardLayout>
   );
 }
+
