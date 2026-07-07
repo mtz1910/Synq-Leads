@@ -77,6 +77,7 @@ function AppRoutes() {
           </PublicRoute>
         } 
       />
+      <Route path="/reset-password" element={<ResetPassword />} />
       <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
       <Route path="/leads" element={<ProtectedRoute><Leads /></ProtectedRoute>} />
       <Route path="/recuperacao" element={<ProtectedRoute><RecuperacaoIA /></ProtectedRoute>} />
