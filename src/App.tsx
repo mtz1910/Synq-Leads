@@ -13,6 +13,7 @@ import WhatsApp from '@/pages/WhatsApp';
 import Campanhas from '@/pages/Campanhas';
 import Analytics from '@/pages/Analytics';
 import Configuracoes from '@/pages/Configuracoes';
+import ResetPassword from '@/pages/ResetPassword';
 import NotFound from '@/pages/NotFound';
 import ScrollToTop from '@/components/ScrollToTop';
 
@@ -76,6 +77,7 @@ function AppRoutes() {
           </PublicRoute>
         } 
       />
+      <Route path="/reset-password" element={<ResetPassword />} />
       <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
       <Route path="/leads" element={<ProtectedRoute><Leads /></ProtectedRoute>} />
       <Route path="/recuperacao" element={<ProtectedRoute><RecuperacaoIA /></ProtectedRoute>} />
