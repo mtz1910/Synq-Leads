@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
-import { Sparkles, Copy, Wand2, Inbox } from 'lucide-react';
+import { Sparkles, Copy, Wand2, Inbox, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 
 interface Creative {
