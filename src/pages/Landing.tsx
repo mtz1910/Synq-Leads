@@ -237,8 +237,8 @@ export default function Landing() {
           </div>
           <div className="grid md:grid-cols-3 gap-6">
             {plans.map((p, i) => (
-              <Card key={i} className={`relative backdrop-blur ${p.popular
-                ? 'bg-gradient-to-b from-[#10B981]/15 to-white/[0.02] border-[#10B981]/50 shadow-[0_0_40px_rgba(16,185,129,0.25)]'
+              <Card key={i} className={`relative backdrop-blur text-white ${p.popular
+                ? 'bg-[#0a1a15] bg-gradient-to-b from-[#10B981]/20 to-transparent border-[#10B981]/50 shadow-[0_0_40px_rgba(16,185,129,0.25)]'
                 : 'bg-white/[0.03] border-white/10'}`}>
                 {p.popular && (
                   <div className="absolute -top-3 left-1/2 -translate-x-1/2">
