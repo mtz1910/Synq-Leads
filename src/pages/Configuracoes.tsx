@@ -69,7 +69,7 @@ export default function Configuracoes() {
 
   return (
     <DashboardLayout title="Configurações" subtitle="Conta, equipe e preferências">
-      <div className="grid lg:grid-cols-2 gap-6 max-w-5xl">
+      <div className="grid xl:grid-cols-2 gap-6 max-w-5xl">
         <div className="rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur p-6 space-y-4">
           <h3 className="font-bold">Perfil</h3>
           <div className="space-y-2">
