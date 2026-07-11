@@ -69,7 +69,7 @@ export default function Configuracoes() {
 
   return (
     <DashboardLayout title="Configurações" subtitle="Conta, equipe e preferências">
-      <div className="grid lg:grid-cols-2 gap-6 max-w-5xl">
+      <div className="grid xl:grid-cols-2 gap-6 max-w-5xl">
         <div className="rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur p-6 space-y-4">
           <h3 className="font-bold">Perfil</h3>
           <div className="space-y-2">
@@ -102,7 +102,7 @@ export default function Configuracoes() {
           <p className="text-xs text-white/40">Clique em "Salvar alterações" no card ao lado para gravar suas preferências.</p>
         </div>
 
-        <div className="rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur p-6 lg:col-span-2">
+        <div className="rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur p-6 xl:col-span-2">
           <h3 className="font-bold mb-1">Plano atual</h3>
           <p className="text-sm text-white/60 mb-4">Você está no plano <span className="text-[#10B981] font-semibold">{planName}</span>.</p>
           <Button
@@ -113,7 +113,7 @@ export default function Configuracoes() {
           </Button>
         </div>
 
-        <div className="rounded-2xl border border-red-500/20 bg-red-500/5 backdrop-blur p-6 lg:col-span-2">
+        <div className="rounded-2xl border border-red-500/20 bg-red-500/5 backdrop-blur p-6 xl:col-span-2">
           <h3 className="font-bold mb-1">Zona de perigo</h3>
           <p className="text-sm text-white/60 mb-4">Sair da conta em todos os dispositivos deste navegador.</p>
           <AlertDialog>
