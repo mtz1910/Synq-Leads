@@ -15,6 +15,7 @@ import Analytics from '@/pages/Analytics';
 import Configuracoes from '@/pages/Configuracoes';
 import ResetPassword from '@/pages/ResetPassword';
 import NotFound from '@/pages/NotFound';
+import ComingSoon from '@/pages/ComingSoon';
 import ScrollToTop from '@/components/ScrollToTop';
 
 const queryClient = new QueryClient();
@@ -86,6 +87,13 @@ function AppRoutes() {
       <Route path="/campanhas" element={<ProtectedRoute><Campanhas /></ProtectedRoute>} />
       <Route path="/analytics" element={<ProtectedRoute><Analytics /></ProtectedRoute>} />
       <Route path="/configuracoes" element={<ProtectedRoute><Configuracoes /></ProtectedRoute>} />
+      <Route path="/automacoes" element={<ProtectedRoute><ComingSoon title="Automações" kicker="Automações" subtitle="Editor visual de fluxos — chegando na próxima fase." /></ProtectedRoute>} />
+      <Route path="/agentes" element={<ProtectedRoute><ComingSoon title="Agentes IA" kicker="Agentes IA" subtitle="Configure persona, instruções e ativação dos seus agentes." /></ProtectedRoute>} />
+      <Route path="/projetos" element={<ProtectedRoute><ComingSoon title="Projetos" kicker="Projetos" /></ProtectedRoute>} />
+      <Route path="/pipeline" element={<ProtectedRoute><ComingSoon title="Pipeline de Leads" kicker="Pipeline" subtitle="Kanban dos leads em cada etapa do fluxo." /></ProtectedRoute>} />
+      <Route path="/comentarios" element={<ProtectedRoute><ComingSoon title="Comentários" kicker="Comentários" /></ProtectedRoute>} />
+      <Route path="/inbox" element={<ProtectedRoute><ComingSoon title="E-mail Inbox" kicker="Inbox" /></ProtectedRoute>} />
+      <Route path="/integracoes" element={<ProtectedRoute><ComingSoon title="Conexões com o mundo" kicker="Integrações" subtitle="Conecte as plataformas que você usa e deixe o Synq Leads cuidar das mensagens." /></ProtectedRoute>} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
