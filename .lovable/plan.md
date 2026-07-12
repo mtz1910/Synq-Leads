@@ -1,84 +1,82 @@
-## Synq Leads — Plano de execução
 
-Sua lista é enorme (16 problemas + 7 etapas). Para evitar quebrar o app, vou dividir em **fases entregues em mensagens separadas**. Você aprova esta fase 1 e seguimos.
+# Reconstrução completa do frontend
 
----
+Substituir toda a camada visual do app pelas telas das 9 imagens de referência, preservando 100% da lógica atual (Supabase, auth, tabelas, edge functions). A identidade visual atual (emerald #10B981 + graphite #0F172A, logo Synq Leads) é mantida — apenas as cores azul-claras das imagens são substituídas pela paleta atual.
 
-### Fase 1 — Rebrand + correções críticas de UX (esta entrega)
-
-**Rebrand "LeadVolt AI" → "Synq Leads"**
-- Trocar nome em Landing, Login, Register, Dashboard, sidebar, `index.html` (title/meta), memória do projeto
-- Novo slogan na Landing: *"Recupere **clientes** automaticamente com inteligência artificial. **MIL** funcionários **TRABALHANDO** por você **TODOS** os dias, para aumentar seu **DINHEIRO** quase de **GRAÇA**"*
-
-**Correções críticas (itens 6, 7, 8, 13, 16)**
-- **#7/#8** Remover botões "Teste grátis" e "Ver demo do dashboard" que logam direto sem auth → redirecionar para `/register`
-- **#6** Modal de confirmação ao deslogar
-- **#13** Cor do texto no plano Growth (legibilidade sobre fundo escuro/claro)
-- **#16** Mobile responsivo: caixa "Disparar campanha" no Dashboard, badges de status em Campanhas, opções em Leads — tudo com `flex-wrap`, `truncate`, `min-w-0`, breakpoints corretos
-- Garantir nada saia das bordas em nenhuma página
-
-**Logout com confirmação + WhatsApp flutuante (#14)**
-- Botão WhatsApp flutuante no canto da Landing (você me passa o número depois, deixo placeholder editável)
+Escopo grande e com muitas decisões. Vou entregar em **fases**, cada fase gera um preview funcional. Peço aprovação antes de começar.
 
 ---
 
-### Fase 2 — Dados reais por usuário (itens 1, 5, 10, 11, 12, e Etapa 1)
+## Fase 1 — Novo shell (sidebar + layout)
 
-Criar tabelas no backend (Lovable Cloud) para cada usuário ter dados isolados:
-- `leads`, `campaigns`, `creatives`, `whatsapp_connections`, `metrics_daily`
-- Todas com RLS por `user_id`
-- Substituir todos os mocks por queries reais
-- Conta nova = tudo zerado
-- Gráficos com Recharts (Receita recuperada, Analytics) com tooltip e hover
-- Cards de métricas clicáveis abrindo modal com detalhe diário
-- Página Configurações persistindo nome de exibição
-- Criativos IA usando edge function + Lovable AI Gateway (Gemini) — geração real
-- Recuperação IA: criar/pausar/disparar campanhas funcionando
+Novo `AppLayout` com sidebar fixa idêntica às imagens:
+- Logo + "Synq Leads" + "WORKSPACE · BETA" no topo
+- Seções: **PRINCIPAL** (Dashboard, Analytics, Automações, Agentes IA, Projetos), **ATENDIMENTO** (Chat, Contatos, Pipeline, Comentários, Inbox), **CONTA** (Integrações, Configurações)
+- Card do usuário no rodapé (avatar + nome + papel)
+- Estado ativo com pill/destaque emerald
+- Colapsável (botão de collapse mostrado nas imagens)
+- Substitui o `DashboardLayout` atual em todas as páginas
 
----
+## Fase 2 — Páginas existentes redesenhadas
 
-### Fase 3 — Auth robusto (item 9)
+Reescritas visualmente (lógica intocada):
+- **Dashboard**: header "Olá, automações em movimento", botão "+ Nova automação", gráfico de área principal + coluna lateral RESUMO (Leads, Novos 7d, Automações, Agentes IA, Conversão)
+- **Analytics**: hero com globo/mapa mundial 3D em card escuro + coluna KPIs (Leads, Vendas, Em Recuperação, Faturamento)
+- **Chat (WhatsApp)**: lista de conversas à esquerda (abas Tudo/Não lidas/Favoritas/Grupos), thread ao centro estilo WhatsApp, composer inferior
+- **Contatos (Leads)**: tabela minimalista com avatares, coluna Tags, Última msg, botão "Disparar fluxo" por linha, paginação
+- **Configurações**: card grande de Perfil + grid 2x2 lateral (Senha, 2FA, IA MCP, Sessão) com tokens IA do mês
+- **Integrações**: 6 cards grandes (Instagram em breve, WhatsApp, Plataformas de Venda, E-mail, Telegram, Webhooks)
 
-- Verificação de email obrigatória (desativar auto-confirm)
-- Validação de senha: 6+ chars, maiúscula, minúscula, número, caractere especial
-- Telefone único por conta (constraint no DB)
-- Mensagens de erro específicas (email não confirmado, senha errada, etc.)
-- Página `/reset-password`
-- Login com Google
+## Fase 3 — Páginas novas
 
----
+- **Pipeline (Kanban)**: 5 colunas (Em curso, Aguardando resposta, Aguardando timer, Concluído, Falhou/Cancelado), cards de lead com tags, drag-and-drop entre colunas, contador por coluna. Persiste `status` em `leads`.
+- **Agentes IA**: lista + editor de agente (Persona, Instruções de venda, Base de conhecimento, Ativação com contas WhatsApp, Palavras-chave, Modo recepcionista, Ações da IA, botões Rascunho/Ativar/Salvar). Nova tabela `ai_agents`.
+- **Projetos**, **Comentários**, **Inbox**: shells básicos com estados vazios estilizados (para não deixar rotas quebradas).
 
-### Fase 4 — Pricing real + bloqueio por plano (Etapa 4, 5)
+## Fase 4 — Editor visual de Automações (a parte mais crítica)
 
-- Atualizar planos na Landing:
-  - **Starter R$79,90/mês** — "Para validar o canal · recupere até R$4.000/mês · até 500 leads/mês" — botão "Assinar Starter"
-  - **Growth R$319 → R$197/mês** (oferta) — "Para os 20 primeiros · Para quem já vende todo dia · recupere até R$10.000/mês · 2.000 leads/mês · curso Marketing Digital R$0→R$100k · grupo VIP vitalício"
-  - **Scale** — "Gerente real 24/7 · Para operações de alto volume · R$30.000+/mês · curso R$0→R$500k · grupo VIP vitalício"
-- Integração de pagamento com **Mercado Pago** (você fornece access token)
-- Gating de páginas por plano com tela "Faça upgrade para acessar"
-- Página dedicada `/upgrade`
+Substitui `CriativosIA`/fluxo atual por um **editor de canvas** usando **React Flow** (`@xyflow/react`):
+- Canvas infinito com grid, pan, zoom, minimap, controles
+- Toolbar inferior fixa: Mensagem, Pergunta, Atraso, Condição, Random, Conectar, Ação, Agente IA, Alerta
+- Header: nome do fluxo, badges WhatsApp/LIVE, botões Visualizar / Importar / Exportar / Histórico / Ativo / Republicar
+- **Blocos** (nós customizados): Início, Mensagem, Pergunta, Condição, Delay, Espera, IA, Random, Webhook, Pipeline, Tag, Variável, Pagamento, HTTP Request, Fim — cada um com handles de entrada/saída
+- Configuração **inline** em cada bloco (sem sidebar de propriedades)
+  - Mensagem: texto + toggles imagem/vídeo/áudio/doc/botões/lista, delay de digitação, variáveis `%nome%`
+  - Pergunta: tipo (texto/número/telefone/email/CPF/data/múltipla escolha), salvar em variável, opções
+  - Condição: IF/ELSE com operadores (maior, menor, igual, contém, não contém, regex)
+  - IA: prompt, modelo, temperatura, fallback
+- Conexões bezier, seleção múltipla, copiar/duplicar/excluir, undo/redo (histórico local)
+- Persistência em nova tabela `automations` (nodes + edges como JSONB)
 
----
+## Fase 5 — Landing e Auth
 
-### Fase 5 — Integrações reais (Etapa 2, 3)
-
-- **OpenAI/Lovable AI**: já incluído na Fase 2 para criativos
-- **WhatsApp real**: requer serviço externo (Evolution API, Z-API, WPPConnect ou Cloud API oficial). WhatsApp não tem SDK gratuito direto — preciso saber qual provedor você quer usar antes
-- Conversas em tempo real após QR (item 15) depende dessa escolha
-
----
-
-### Fase 6 — Logs de erro (Etapa 7)
-
-- Tabela `error_logs` capturando user_id, página, erro, stack
-- Edge function central de logging
-- Visualização para admin
+Landing e telas de login/registro **não fazem parte das imagens** — mantidas como estão. Confirmar se devem ser retrabalhadas também.
 
 ---
 
-### Perguntas antes de começar a Fase 1
+## Detalhes técnicos
 
-1. **Número de WhatsApp** para o botão flutuante? (posso deixar `+55 00 00000-0000` como placeholder)
-2. Confirma que posso **remover completamente** os botões "Teste grátis" / "Ver demo" sem fluxo demo?
+- Novas dependências: `@xyflow/react` (editor de fluxo), `@dnd-kit/core` + `@dnd-kit/sortable` (kanban)
+- Novas migrações:
+  - `ai_agents` (persona, instructions, knowledge_base, keywords, active_hours, whatsapp_account_id, status)
+  - `automations` (name, status, nodes JSONB, edges JSONB, channel, is_live)
+  - Todas com RLS por `user_id` + GRANTs padrão
+- Nenhuma alteração em: `profiles`, `user_roles`, `leads`, `subscriptions`, `plans`, `whatsapp_connections`, `campaigns`, `creatives`, `metrics_daily`, `predictions`, edge function `generate-creatives`
+- Todas as páginas atuais mantêm suas queries — só troca JSX/estilo
+- Tema mantido: dark graphite com accent emerald (as imagens usam azul → vira emerald no nosso app)
 
-Se topar, eu começo pela **Fase 1** agora. As demais fases entrego em sequência conforme você aprovar.
+## Ordem de entrega
+
+1. Fase 1 (shell) — 1 turno
+2. Fase 2 (6 páginas redesenhadas) — 2 turnos
+3. Fase 3 (Kanban + Agentes IA + shells) — 2 turnos
+4. Fase 4 (editor de automações) — 3 turnos, a maior peça
+
+Total: ~8 turnos de implementação.
+
+---
+
+**Confirma que posso começar pela Fase 1?** E responda também:
+1. Landing/Login/Register: manter como estão ou também refazer?
+2. As páginas atuais **RecuperacaoIA** e **Campanhas** somem (viram parte de Automações) — ok?
+3. Editor de automações: ok usar **React Flow** como base?
